@@ -4,10 +4,14 @@
 
 #define LED_PIN 7
 
-#define NUM_LEDS 60
+#define NUM_LEDS 16
 
-#define BRIGHT_MAX 255
+#define BRIGHT_MAX 255.0
 #define BRIGHT_MIN 0
+
+#define REFRESH_HZ 100
+
+#define MAX_TICK 900.0
 
 enum {
     LED_OFF = 0,
@@ -32,21 +36,25 @@ enum {
 };
 
 typedef struct LEDVals {
-    int r;
-    int g;
-    int b;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
 } LEDVals;
 
 class LEDDriver {
 
 private:
     int mode, modePrev;    
-    int brightness;
+    float brightness;
     int speed;
     int color;
 
-    LEDVals *raw[NUM_LEDS];
-    LEDVals *val[NUM_LEDS];
+    long refreshMs;
+    int tick;
+    int brightDir;
+
+    LEDVals raw[NUM_LEDS];
+    LEDVals val[NUM_LEDS];
     CRGB leds[NUM_LEDS];
 
     //Function pointers with diff functions for diff modes
@@ -56,6 +64,8 @@ private:
     void _ledsOff(void);
     void _ledsOn(void);
     void _ledsSwirl(void);
+
+    void _setVal(int led, int r, int g, int b);
 
 public:
 
@@ -69,7 +79,7 @@ public:
      * @param pin Pin of LED
      * @param mode Initial mode of LED
      */
-    void init(int pin);
+    void init();
 
     /**
      * @brief Run LED program in program loop
