@@ -1,17 +1,28 @@
 #include <Arduino.h>
 
-extern "C" {
-  #include "LEDDrive.h"
-}
+#include "LEDDrive.h"
 
 //Initial objects & structs
-struct LEDStruct led1;
+LEDDriver led;
 
 void setup() {
-  LED_init(&led1, 13, LOW);
+  Serial.begin(9600);
+
+  led.init(6);
 }
 
 void loop() {
-  LED_toggle(&led1);
+  led.run();
+
+  if(led.getMode() == LED_OFF)
+  {
+    led.changeMode(LED_ON);
+  }
+  else
+  {
+    led.changeMode(LED_OFF);
+  }
+
   delay(1000);
+
 }
