@@ -13,6 +13,18 @@
 
 #define MAX_TICK 900.0
 
+#define N 7
+
+float h[N] = {
+    0.25,
+    0.5,
+    0.75,
+    1,
+    0.75,
+    0.5,
+    0.25
+};
+
 enum {
     LED_OFF = 0,
     LED_ON,
@@ -39,6 +51,11 @@ typedef struct LEDVals {
     uint8_t r;
     uint8_t g;
     uint8_t b;
+    void set(uint8_t r, uint8_t g, uint8_t b) {
+        this->r = r;
+        this->g = g;
+        this->b = b;
+    }
 } LEDVals;
 
 class LEDDriver {

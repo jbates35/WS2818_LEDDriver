@@ -67,8 +67,11 @@ void LEDDriver::_ledsOn()
 {
 }
 
+
 void LEDDriver::_ledsSwirl()
 {
+
+
     int arrCount = tick * (NUM_LEDS * 5.0/MAX_TICK);
 
     if(tick==0)
@@ -87,11 +90,11 @@ void LEDDriver::_ledsSwirl()
     brightness = 128 + brightTerm;
 
     //First set all to the base colour
-    for(int i = 0; i < NUM_LEDS; i++)
+    for(auto x : raw)
     {
-        _setVal(i, 255, 0, 70);
+        x.set(255, 0, 70);
     }
-    
+
     _setVal(arrCount, 170, 35, 120);
     _setVal(arrCount+1, 80, 70, 180);
     _setVal(arrCount+2, 0, 105, 255);
@@ -104,7 +107,5 @@ void LEDDriver::_setVal(int led, int r, int g, int b)
     if(led < 0 || led >= NUM_LEDS)
         return;
 
-    raw[led].r = r;
-    raw[led].g = g;
-    raw[led].b = b;
+    raw[led].set(r, g, b);
 }
